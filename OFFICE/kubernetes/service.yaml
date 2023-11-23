@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: OFFICE
+  labels:
+    app: OFFICE
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: OFFICE

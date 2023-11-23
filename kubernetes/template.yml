@@ -1,0 +1,114 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: OFFICE
+  labels:
+    app: OFFICE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: OFFICE
+  template:
+    metadata:
+      labels:
+        app: OFFICE
+    spec:
+      containers:
+        - name: OFFICE
+          image: username/OFFICE:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: HOME
+  labels:
+    app: HOME
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: HOME
+  template:
+    metadata:
+      labels:
+        app: HOME
+    spec:
+      containers:
+        - name: HOME
+          image: username/HOME:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: OFFICE
+  labels:
+    app: OFFICE
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: OFFICE
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: HOME
+  labels:
+    app: HOME
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: HOME
+
